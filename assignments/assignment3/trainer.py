@@ -1,7 +1,7 @@
 import numpy as np
 from copy import deepcopy
 
-from metrics import multiclass_accuracy
+from metrics_solution import multiclass_accuracy
 
 
 class Dataset:
@@ -25,7 +25,8 @@ class Trainer:
                  num_epochs=20,
                  batch_size=20,
                  learning_rate=1e-3,
-                 learning_rate_decay=1.0):
+                 learning_rate_decay=1.0,
+                 verbose=True):
         '''
         Initializes the trainer
 
@@ -46,6 +47,7 @@ class Trainer:
         self.learning_rate = learning_rate
         self.num_epochs = num_epochs
         self.learning_rate_decay = learning_rate_decay
+        self.verbose = verbose
 
         self.optimizers = None
 
@@ -116,8 +118,9 @@ class Trainer:
             val_accuracy = self.compute_accuracy(self.dataset.val_X,
                                                  self.dataset.val_y)
 
-            print("Loss: %f, Train accuracy: %f, val accuracy: %f" % 
-                  (batch_losses[-1], train_accuracy, val_accuracy))
+            if self.verbose:
+                print("Epoch #%d. Loss: %f, Train accuracy: %f, val accuracy: %f" %
+                      (epoch + 1, batch_losses[-1], train_accuracy, val_accuracy))
 
             loss_history.append(ave_loss)
             train_acc_history.append(train_accuracy)
